@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CA AI Ranking</title>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.21.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.17.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.20.2"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="//unpkg.com/alpinejs" defer></script>
+</head>
+<body class="">
+  <div class="ml-10 mt-10 mb-6">
+  <h1 class="text-3xl text-grey-800">
+    What are the top Canadian universities for AI research?
+  </h1>
+  <h2 class="mt-2 text-sm text-slate-600">
+    Data below taken from CSRankings, a metrics-based ranking of top
+    computer science institutions around the world.
+  </h2>
+  </div>
+
+  <div x-data="{ category: 'general' }">
+    <div class="relative ml-11 mb-1 z-20">
+      <label for="category-sel" class="text-grey-600 "> CSRanking Metric in </label>
+      <select class="ml-1 text-grey-600 font-bold appearance-none" name="categories" id="category-sel" @input="category = $event.target.value">
+        <option value="general">AI (Overall)</option>
+        <option value="fundamental">Foundational AI</option>
+        <option value="applied">Applied AI</option>
+      </select>
+    </div>
+
+    <div class="ml-10" x-show="category === 'general'" >
+      <div class="flex flex-col">
+        <div id="c2" class="absolute z-10"></div>
+        <div id="c1" class="-mt-96 z-1"></div>
+      </div>
+    </div>
+
+    <div class="ml-10" x-show="category === 'fundamental'" >
+      <div class="flex flex-col">
+        <div id="c4" class="absolute z-10"></div>
+        <div id="c3" class="-mt-96 z-1"></div>
+      </div>
+    </div>
+
+    <div class="ml-10" x-show="category === 'applied'" >
+      <div class="flex flex-col">
+        <div id="c6" class="absolute z-10"></div>
+        <div id="c5" class="-mt-96 z-1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute left-10 bottom-10 text-xs text-gray-400">
+    <p >* Data is obtained from <a class="underline" href="http://csrankings.org/#/fromyear/2011/toyear/2021/index?ai&vision&mlmining&nlp&ir&ca" target="_blank">CSRankings</a> on 2022 April</p>
+    <p class="mt-1">** Made by Alan Wu, a PhD student in <a class="underline" href="http://www.jeffjianzhao.com/team/" target="_blank">WatVis Lab</a>, University of Waterloo</p>
+  </div>
+</body>
+
+<script>
+  fetch("chart/map.json")
+  .then((response) => response.json())
+  .then((spec) => {
+    vegaEmbed('#c1',spec)
+  })
+
+  fetch("chart/bar.json")
+  .then((response) => response.json())
+  .then((spec) => {
+    vegaEmbed('#c2',spec, {renderer:'svg'})
+  })
+
+  fetch("chart/map_fd.json")
+  .then((response) => response.json())
+  .then((spec) => {
+    vegaEmbed('#c3',spec)
+  })
+
+  fetch("chart/bar_fd.json")
+  .then((response) => response.json())
+  .then((spec) => {
+    vegaEmbed('#c4',spec, {renderer:'svg'})
+  })
+
+  fetch("chart/map_ap.json")
+  .then((response) => response.json())
+  .then((spec) => {
+    vegaEmbed('#c5',spec)
+  })
+
+  fetch("chart/bar_ap.json")
+  .then((response) => response.json())
+  .then((spec) => {
+    vegaEmbed('#c6',spec, {renderer:'svg'})
+  })
+</script>
+</html>
